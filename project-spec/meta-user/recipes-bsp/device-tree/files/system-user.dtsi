@@ -1,3 +1,56 @@
 /include/ "system-conf.dtsi"
 / {
 };
+
+/* QSPI PHY */
+&qspi {
+    #address-cells = <1>;
+    #size-cells = <0>;
+    status = "okay";
+    flash0: flash@0 {
+        compatible = "jedec,spi-nor";
+        reg = <0x0>;
+        #address-cells = <1>;
+        #size-cells = <1>;
+    };
+};
+
+/* ETH PHY */
+&gem0 {
+ 
+    status = "okay";
+        ethernet_phy0: ethernet-phy@0 {
+        compatible = "marvell,88e1510";
+        device_type = "ethernet-phy";
+                reg = <0>;
+    };
+};
+
+/* USB PHY */
+/{
+    usb_phy0: usb_phy@0 {
+        compatible = "ulpi-phy";
+        //compatible = "usb-nop-xceiv";
+        #phy-cells = <0>;
+        reg = <0xe0002000 0x1000>;
+        view-port = <0x0170>;
+        drv-vbus;
+    };
+};
+ 
+&usb0 {
+    dr_mode = "host";
+    //dr_mode = "peripheral";
+    usb-phy = <&usb_phy0>;
+};
+
+/* I2C */
+// i2c PLL: 0x70, i2c eeprom: 0x50
+ 
+&i2c1 {
+    rtc@6F {        // Real Time Clock
+       compatible = "isl12022";
+       reg = <0x6F>;
+   };
+ 
+};
