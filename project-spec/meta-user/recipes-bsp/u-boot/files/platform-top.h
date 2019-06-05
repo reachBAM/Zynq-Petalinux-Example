@@ -34,3 +34,6 @@
 #define CONFIG_SYS_I2C_MUX_ADDR                0x74
 #define CONFIG_SYS_I2C_MUX_EEPROM_SEL          0x4
 #endif
+
+#define CONFIG_BOOTCOUNT_LIMIT
+#define CONFIG_BOOTCOUNT_ENV
