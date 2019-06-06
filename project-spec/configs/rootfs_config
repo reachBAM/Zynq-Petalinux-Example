@@ -4126,13 +4126,14 @@ CONFIG_imagefeature-hwcodecs=y
 #
 # apps 
 #
+CONFIG_fpgabin=y
 # CONFIG_gpio-demo is not set
 # CONFIG_peekpoke is not set
-CONFIG_mender=y
 
 #
 # user packages 
 #
+CONFIG_mender=y
 
 #
 # PetaLinux RootFS Settings
