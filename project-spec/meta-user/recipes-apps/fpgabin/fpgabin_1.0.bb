@@ -6,10 +6,10 @@ the image."
 LICENSE = "BSD"
 
 include fpga-zynq.inc
-
 inherit deploy
 
 PROVIDES = "virtual/fpga-bin"
+FILES_${PN} = "/boot/fpga.bin"
 
 do_configure[depends] += "${@get_bootbin_depends(d)}"
 
@@ -64,7 +64,7 @@ python do_configure() {
 
     fp = d.getVar("FPGA_BIF_FILE_PATH", True)
     biffd = open(fp, 'w')
-    biffd.write("the_ROM_image:\n")
+    biffd.write("all:\n")
     biffd.write("{\n")
 
     bifattr = (d.getVar("FPGA_BIF_COMMON_ATTR", True) or "").split()
@@ -86,20 +86,13 @@ do_configure[vardeps] += "FPGA_BIF_PARTITION_ATTR FPGA_BIF_PARTITION_IMAGE FPGA_
 
 do_compile() {
     cd ${WORKDIR}
-    rm -f ${B}/fpga.bin
-    bootgen -image ${FPGA_BIF_FILE_PATH} -arch ${SOC_FAMILY} ${BOOTGEN_EXTRA_ARGS} -w -o ${B}/fpga.bin
-    if [ ! -e ${B}/fpga.bin ]; then
+    bootgen -image ${FPGA_BIF_FILE_PATH} -arch ${SOC_FAMILY} -process_bitstream bin -w on
+    if [ ! -e ${DEPLOY_DIR_IMAGE}/download-${MACHINE}.bit.bin ]; then
         bbfatal "bootgen failed. See log"
     fi
 }
 
 do_install() {
-	:
+	install -d ${D}/boot
+	install -m 0644 ${DEPLOY_DIR_IMAGE}/download-${MACHINE}.bit.bin ${D}/boot/fpga.bin
 }
-
-do_deploy() {
-    install -d ${DEPLOYDIR}
-    install -m 0644 ${B}/fpga.bin ${DEPLOYDIR}/fpga.bin
-}
-addtask do_deploy before do_build after do_compile
-
