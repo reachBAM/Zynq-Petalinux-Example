@@ -1,0 +1,7 @@
+metadata
+*.h
+*.c
+*.html
+*.tcl
+*.bit
+*.hdf

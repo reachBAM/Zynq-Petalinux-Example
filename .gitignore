@@ -10,4 +10,3 @@ pre-built/linux/
 *.log
 project-spec/meta-plnx-generated/
 /components
-project-spec/hw-description/
